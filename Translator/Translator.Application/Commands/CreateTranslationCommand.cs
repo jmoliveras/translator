@@ -5,6 +5,7 @@ namespace Translator.Application.Commands
 {
     public class CreateTranslationCommand : IRequest<TranslationResponse>
     {
-        public string Text { get; set; }
+        public Guid Id { get; set; }
+        public string Text { get; set; }        
     }
 }

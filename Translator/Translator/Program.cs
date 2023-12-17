@@ -3,6 +3,8 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Translator.Application.Handlers.CommandHandlers;
 using Translator.Application.Queries;
+using Translator.Application.Services;
+using Translator.Application.Services.Interfaces;
 using Translator.Domain.Interfaces;
 using Translator.Domain.Interfaces.Base;
 using Translator.Infrastructure.Data;
@@ -31,6 +33,7 @@ builder.Services.AddTransient<ITranslationQueryRepository, TranslationQueryRepos
 builder.Services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepository<>));
 builder.Services.AddTransient<ITranslationCommandRepository, TranslationCommandRepository>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(CreateTranslationHandler).GetTypeInfo().Assembly));
+builder.Services.AddScoped<ITranslationService, TranslationService>();
 
 var app = builder.Build();
 
