@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Translator.Application.Commands;
 using Translator.Application.Queries;
+using Translator.Application.Constants;
 
 namespace Translator.Controllers
 {
@@ -34,6 +35,13 @@ namespace Translator.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Guid> CreateTranslation([FromBody] string text)
         {
+            // Prevent from consuming free tier 2M characters limit in Azure AI Translator
+            // by not allowing large texts.
+            if (text.Length >= 5000)
+            {
+                return BadRequest(ErrorMessages.TextTooLong);
+            }
+
             var id = Guid.NewGuid();
             _ = _mediator.Send(new CreateTranslationCommand { Id = id, Text = text });
             return Ok(id);
