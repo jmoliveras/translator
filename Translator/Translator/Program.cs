@@ -11,6 +11,9 @@ using Translator.Domain.Interfaces.Base;
 using Translator.Infrastructure.Data;
 using Translator.Infrastructure.Data.Repositories;
 using Translator.Application.Handlers.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Translator.Application.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +40,9 @@ builder.Services.AddTransient<ITranslationCommandRepository, TranslationCommandR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(CreateTranslationHandler).GetTypeInfo().Assembly));
 builder.Services.AddScoped<ITranslationService, TranslationService>();
 builder.Services.AddTransient<IFireForgetRepositoryHandler, FireForgetRepositoryHandler>();
+
+builder.Services.Configure<TranslationSettings>(builder.Configuration)
+            .AddSingleton(sp => sp.GetRequiredService<IOptions<TranslationSettings>>().Value);
 
 var app = builder.Build();
 

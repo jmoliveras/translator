@@ -3,17 +3,14 @@ using Azure.AI.TextAnalytics;
 using Azure.AI.Translation.Text;
 using Translator.Application.Constants;
 using Translator.Application.Services.Interfaces;
+using Translator.Application.Settings;
 
 namespace Translator.Application.Services
 {
-    public class TranslationService : ITranslationService
+    public class TranslationService(TranslationSettings settings) : ITranslationService
     {
-        // TODO: Mover a AppSettings
-        private static readonly AzureKeyCredential translationCredential = new("f054402f70a647c6ad577357693bdb6f");
-        private static readonly AzureKeyCredential languageCredential = new("28b443ff23434d16a883cbc3d3f0ddbf");
-        private static readonly Uri languageEndpoint = new("https://langanalyticsai.cognitiveservices.azure.com/");
-        private static readonly string region = "westeurope";
-        
+        private readonly TranslationSettings _settings = settings;
+       
         /// <summary>
         /// Translates given text into given language.
         /// </summary>
@@ -22,6 +19,9 @@ namespace Translator.Application.Services
         /// <returns>The translated text.</returns>
         public async Task<string> TranslateText(string text, string language = Languages.Spanish)
         {
+            AzureKeyCredential translationCredential = new(_settings.TranslationCredential);
+            var region = _settings.Region;
+
             TextTranslationClient client = new(translationCredential, region);
 
             try
@@ -44,6 +44,8 @@ namespace Translator.Application.Services
         /// <returns>The ISO 6391 language name.</returns>
         public async Task<string> DetectLanguage(string text)
         {
+            Uri languageEndpoint = new(_settings.LanguageEndpoint);
+            AzureKeyCredential languageCredential = new(_settings.LanguageCredential);          
             var client = new TextAnalyticsClient(languageEndpoint, languageCredential);
             var result = await client.DetectLanguageAsync(text);
 
