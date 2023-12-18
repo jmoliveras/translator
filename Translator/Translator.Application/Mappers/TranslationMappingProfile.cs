@@ -8,7 +8,6 @@ namespace Translator.Application.Mappers
     {
         public TranslationMappingProfile()
         {
-           // CreateMap<Translation, TranslationResponse>().ReverseMap();
             CreateMap<Translation, CreateTranslationCommand>().ReverseMap();
         }
     }
