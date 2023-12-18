@@ -1,9 +1,6 @@
-﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using System.Data;
+﻿using Microsoft.Extensions.Configuration;
 using Translator.Domain.Entities;
 using Translator.Domain.Interfaces.Base;
-using Translator.Infrastructure.Data.SqlQueries;
 
 namespace Translator.Infrastructure.Data.Repositories
 {

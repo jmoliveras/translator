@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Data.Common;
 using Translator.Domain.Entities;
 using Translator.Domain.Interfaces;
 using Translator.Infrastructure.Data.SqlQueries;
@@ -23,7 +24,7 @@ namespace Translator.Infrastructure.Data.Repositories
                 parameters.Add("id", id, DbType.Guid);
 
                 using var connection = CreateConnection();
-                return await connection.QuerySingleOrDefaultAsync<string>(TranslationQueries.GetTranslationByIdQuery(), parameters);
+                return await connection.QuerySingleOrDefaultAsync<string>(TranslationQueries.GetTranslationByIdQuery(), parameters) ?? throw new Exception("Databse connection error.");
             }
             catch (Exception ex)
             {

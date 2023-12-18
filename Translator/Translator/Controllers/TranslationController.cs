@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Translator.Application.Commands;
 using Translator.Application.Queries;
-using Translator.Application.Responses;
 
 namespace Translator.Controllers
 {
@@ -33,10 +32,11 @@ namespace Translator.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<TranslationResponse>> CreateTranslation([FromBody] string text)
+        public ActionResult<Guid> CreateTranslation([FromBody] string text)
         {
-            var result = await _mediator.Send(new CreateTranslationCommand { Text = text });
-            return Ok(result);
+            var id = Guid.NewGuid();
+            _ = _mediator.Send(new CreateTranslationCommand { Id = id, Text = text });
+            return Ok(id);
         }
     }
 }

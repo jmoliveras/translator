@@ -4,14 +4,9 @@ using Translator.Domain.Interfaces;
 
 namespace Translator.Application.Handlers.QueryHandlers
 {
-    public class GetTranslationByIdHandler : IRequestHandler<GetTranslationByIdQuery, string>
+    public class GetTranslationByIdHandler(ITranslationQueryRepository repository) : IRequestHandler<GetTranslationByIdQuery, string>
     {
-        private readonly ITranslationQueryRepository _translationQueryRepository;
-
-        public GetTranslationByIdHandler(ITranslationQueryRepository repository)
-        {
-            _translationQueryRepository = repository;
-        }
+        private readonly ITranslationQueryRepository _translationQueryRepository = repository;
 
         public async Task<string> Handle(GetTranslationByIdQuery request, CancellationToken cancellationToken)
         {

@@ -3,11 +3,7 @@ using Translator.Domain.Interfaces;
 
 namespace Translator.Infrastructure.Data.Repositories
 {
-    public class TranslationCommandRepository : CommandRepository<Translation>, ITranslationCommandRepository
+    public class TranslationCommandRepository(TranslationContext context) : CommandRepository<Translation>(context), ITranslationCommandRepository
     {
-        public TranslationCommandRepository(TranslationContext context) : base(context)
-        {
-
-        }
     }
 }

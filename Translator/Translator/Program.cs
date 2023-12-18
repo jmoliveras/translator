@@ -1,14 +1,16 @@
+using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Translator.Application.Handlers;
 using Translator.Application.Handlers.CommandHandlers;
-using Translator.Application.Queries;
 using Translator.Application.Services;
 using Translator.Application.Services.Interfaces;
 using Translator.Domain.Interfaces;
 using Translator.Domain.Interfaces.Base;
 using Translator.Infrastructure.Data;
 using Translator.Infrastructure.Data.Repositories;
+using Translator.Application.Handlers.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +36,7 @@ builder.Services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepositor
 builder.Services.AddTransient<ITranslationCommandRepository, TranslationCommandRepository>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(CreateTranslationHandler).GetTypeInfo().Assembly));
 builder.Services.AddScoped<ITranslationService, TranslationService>();
+builder.Services.AddTransient<IFireForgetRepositoryHandler, FireForgetRepositoryHandler>();
 
 var app = builder.Build();
 
@@ -45,9 +48,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
