@@ -40,7 +40,7 @@ namespace Translator.API.Tests
             var id = Guid.NewGuid();
 
             _mockMediator.Setup(x => x.Send(It.IsAny<CreateTranslationCommand>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(new Application.Responses.TranslationResponse { Id = id });
+                It.IsAny<CancellationToken>())).ReturnsAsync(new Unit());
 
             var result = _controller.CreateTranslation("Test");
 

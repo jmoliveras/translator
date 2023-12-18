@@ -3,14 +3,13 @@ using Translator.Application.Commands;
 using Translator.Application.Constants;
 using Translator.Application.Handlers.Interfaces;
 using Translator.Application.Mappers;
-using Translator.Application.Responses;
 using Translator.Application.Services.Interfaces;
 using Translator.Domain.Entities;
 
 namespace Translator.Application.Handlers.CommandHandlers
 {
     public class CreateTranslationHandler(ITranslationService translationService,
-        IFireForgetRepositoryHandler fireForgetRepositoryHandler) : IRequestHandler<CreateTranslationCommand, TranslationResponse>
+        IFireForgetRepositoryHandler fireForgetRepositoryHandler) : IRequestHandler<CreateTranslationCommand, Unit>
     {
         private readonly ITranslationService _translationService = translationService;
         private readonly IFireForgetRepositoryHandler _fireForgetRepositoryHandler = fireForgetRepositoryHandler;
@@ -22,7 +21,7 @@ namespace Translator.Application.Handlers.CommandHandlers
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="ApplicationException">AutoMapper error.</exception>
-        public async Task<TranslationResponse> Handle(CreateTranslationCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateTranslationCommand request, CancellationToken cancellationToken)
         {
             var entity = TranslationMapper.Mapper.Map<Translation>(request) ?? throw new ApplicationException(ErrorMessages.AutoMapper);
             var detectedLang = await _translationService.DetectLanguage(request.Text);
@@ -34,7 +33,7 @@ namespace Translator.Application.Handlers.CommandHandlers
                 await repository.AddAsync(entity);
             });
 
-            return new TranslationResponse();
+            return default;
         }
     }
 }
