@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using System.Data;
-using System.Data.Common;
 using Translator.Domain.Entities;
 using Translator.Domain.Interfaces;
 using Translator.Infrastructure.Data.SqlQueries;
