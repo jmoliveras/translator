@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Translator.Application.Commands;
-using Translator.Application.Responses;
 using Translator.Domain.Entities;
 
 namespace Translator.Application.Mappers

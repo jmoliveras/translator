@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Translator.Application.Responses;
 
 namespace Translator.Application.Commands
 {
