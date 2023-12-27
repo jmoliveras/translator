@@ -23,7 +23,7 @@ namespace Translator.Infrastructure.Data.Repositories
                 parameters.Add("id", id, DbType.Guid);
 
                 using var connection = CreateConnection();
-                return await connection.QuerySingleOrDefaultAsync<string>(TranslationQueries.GetTranslationByIdQuery(), parameters) ?? throw new Exception("Databse connection error.");
+                return await connection.QuerySingleOrDefaultAsync<string>(TranslationQueries.GetTranslationByIdQuery(), parameters) ?? throw new Exception("Database connection error.");
             }
             catch (Exception ex)
             {
