@@ -33,8 +33,9 @@ namespace Translator.Application.Services
 
                 return translations.FirstOrDefault()?.Translations?.FirstOrDefault()?.Text ?? throw new Exception(ErrorMessages.NoTranslation);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex.ToString());
                 throw;
             }
         }
@@ -47,21 +48,19 @@ namespace Translator.Application.Services
         public async Task<string> DetectLanguage(string text)
         {
             Uri languageEndpoint = new(_settings.LanguageEndpoint);
-            AzureKeyCredential languageCredential = new(_settings.LanguageCredential);          
+            AzureKeyCredential languageCredential = new(_settings.LanguageCredential);
             var client = new TextAnalyticsClient(languageEndpoint, languageCredential);
 
-            try 
-            { 
+            try
+            {
                 var result = await client.DetectLanguageAsync(text);
                 return result.Value.Iso6391Name;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
                 throw;
             }
-
-           
         }
     }
 }
