@@ -1,16 +1,18 @@
 ﻿using Azure;
 using Azure.AI.TextAnalytics;
 using Azure.AI.Translation.Text;
+using Microsoft.Extensions.Logging;
 using Translator.Application.Constants;
 using Translator.Application.Services.Interfaces;
 using Translator.Application.Settings;
 
 namespace Translator.Application.Services
 {
-    public class TranslationService(TranslationSettings settings) : ITranslationService
+    public class TranslationService(TranslationSettings settings, ILogger<TranslationService> logger) : ITranslationService
     {
         private readonly TranslationSettings _settings = settings;
-       
+        private readonly ILogger _logger = logger;
+
         /// <summary>
         /// Translates given text into given language.
         /// </summary>
@@ -47,9 +49,19 @@ namespace Translator.Application.Services
             Uri languageEndpoint = new(_settings.LanguageEndpoint);
             AzureKeyCredential languageCredential = new(_settings.LanguageCredential);          
             var client = new TextAnalyticsClient(languageEndpoint, languageCredential);
-            var result = await client.DetectLanguageAsync(text);
 
-            return result.Value.Iso6391Name;
+            try 
+            { 
+                var result = await client.DetectLanguageAsync(text);
+                return result.Value.Iso6391Name;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+
+           
         }
     }
 }

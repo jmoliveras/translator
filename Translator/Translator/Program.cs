@@ -43,6 +43,7 @@ builder.Services.AddTransient<IFireForgetRepositoryHandler, FireForgetRepository
 
 builder.Services.Configure<TranslationSettings>(builder.Configuration)
             .AddSingleton(sp => sp.GetRequiredService<IOptions<TranslationSettings>>().Value);
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 var app = builder.Build();
 
