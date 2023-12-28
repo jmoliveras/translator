@@ -3,6 +3,6 @@
     public static class TranslationQueries
     {
         public static string GetTranslationByIdQuery() =>
-            "SELECT Text FROM Translations WHERE Id = @id";
+            "SELECT * FROM Translations WHERE Id = @id";
     }
 }

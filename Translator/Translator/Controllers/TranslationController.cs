@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Translator.Application.Commands;
 using Translator.Application.Queries;
 using Translator.Application.Constants;
+using Translator.Application.DTO;
 
 namespace Translator.Controllers
 {
@@ -19,16 +20,9 @@ namespace Translator.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<string> Get(Guid id)
+        public async Task<BaseDto> Get(Guid id)
         {
-            try
-            {
-                return await _mediator.Send(new GetTranslationByIdQuery(id));
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            return await _mediator.Send(new GetTranslationByIdQuery(id));
         }
 
         [HttpPost]
@@ -43,7 +37,7 @@ namespace Translator.Controllers
             }
 
             var id = Guid.NewGuid();
-            _ = _mediator.Send(new CreateTranslationCommand { Id = id, Text = text });
+            _ = _mediator.Send(new CreateTranslationCommand { Id = id, OriginalText = text });
             return Ok(id);
         }
     }

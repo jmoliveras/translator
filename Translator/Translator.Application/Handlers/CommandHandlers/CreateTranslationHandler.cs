@@ -5,6 +5,7 @@ using Translator.Application.Handlers.Interfaces;
 using Translator.Application.Mappers;
 using Translator.Application.Services.Interfaces;
 using Translator.Domain.Entities;
+using Translator.Domain.Enums;
 
 namespace Translator.Application.Handlers.CommandHandlers
 {
@@ -24,15 +25,27 @@ namespace Translator.Application.Handlers.CommandHandlers
         public async Task<Unit> Handle(CreateTranslationCommand request, CancellationToken cancellationToken)
         {
             var entity = TranslationMapper.Mapper.Map<Translation>(request) ?? throw new ApplicationException(ErrorMessages.AutoMapper);
-            var detectedLang = await _translationService.DetectLanguage(request.Text);
 
-            entity.Text = detectedLang != Languages.Spanish ? await _translationService.TranslateText(request.Text) : request.Text;
+            try
+            {                
+                var detectedLang = await _translationService.DetectLanguage(request.OriginalText);
 
-            _fireForgetRepositoryHandler.Execute(async repository =>
+                entity.Result = detectedLang != Languages.Spanish ? await _translationService.TranslateText(request.OriginalText) : request.OriginalText;                               
+                entity.DetectedLanguage = detectedLang;
+                entity.Status = Status.Success;
+            }
+            catch (Exception ex)
             {
-                await repository.AddAsync(entity);
-            });
-
+                entity.Result = ex.Message;
+                entity.Status = Status.Error;
+            }
+            finally
+            {
+                _fireForgetRepositoryHandler.Execute(async repository =>
+                {
+                    await repository.AddAsync(entity);
+                });
+            }
             return default;
         }
     }

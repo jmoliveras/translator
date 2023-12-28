@@ -10,7 +10,9 @@ namespace Translator.Infrastructure.Data.Configuration
         {
             builder.ToTable("translations");
             builder.HasKey(c => c.Id);     
-            builder.Property(c => c.Text).IsRequired();
+            builder.Property(c => c.Result).IsRequired();
+            builder.Property(c => c.Status).IsRequired();
+            builder.Property(c => c.OriginalText).IsRequired();            
         }
     }
 }
