@@ -5,6 +5,7 @@ using Xunit;
 using Translator.Controllers;
 using Translator.Application.Queries;
 using Translator.Application.Commands;
+using Translator.Application.DTO;
 
 namespace Translator.API.Tests
 {
@@ -50,6 +51,11 @@ namespace Translator.API.Tests
             Assert.IsType<ActionResult<Guid>>(result);
         }
 
-        private string GetTestTranslation() => "Prueba";
+        private TranslationDto GetTestTranslation() => new TranslationDto
+        {
+            DetectedLanguage = "es",
+            OriginalText = "Test",
+            Result = "Prueba"
+        };
     }
 }

@@ -4,6 +4,7 @@ using Translator.Application.Commands;
 using Translator.Application.Queries;
 using Translator.Application.Constants;
 using Translator.Application.DTO;
+using Translator.Domain.Extensions;
 
 namespace Translator.Controllers
 {
@@ -12,10 +13,12 @@ namespace Translator.Controllers
     public class TranslationController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IConfiguration _configuration;
 
-        public TranslationController(IMediator mediator)
+        public TranslationController(IMediator mediator, IConfiguration config)
         {
             _mediator = mediator;
+            _configuration = config;
         }
 
         [HttpGet("{id}")]
@@ -31,7 +34,7 @@ namespace Translator.Controllers
         {
             // Prevent from consuming free tier 2M characters limit in Azure AI Translator
             // by not allowing large texts.
-            if (text.Length >= 5000)
+            if (text.ExceedsLength(_configuration.GetValue<int>("TranslationMaxLength")))
             {
                 return BadRequest(ErrorMessages.TextTooLong);
             }
