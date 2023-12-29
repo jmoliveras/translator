@@ -34,9 +34,11 @@ namespace Translator.Controllers
         {
             // Prevent from consuming free tier 2M characters limit in Azure AI Translator
             // by not allowing large texts.
-            if (text.ExceedsLength(_configuration.GetValue<int>("TranslationMaxLength")))
+            var maxLength = _configuration.GetValue<int>("TranslationMaxLength");
+
+            if (text.ExceedsLength(maxLength))
             {
-                return BadRequest(ErrorMessages.TextTooLong);
+                return BadRequest(string.Format(ErrorMessages.TextTooLong, maxLength));
             }
 
             var id = Guid.NewGuid();
