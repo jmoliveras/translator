@@ -14,30 +14,40 @@ namespace Translator.Application.Handlers.QueryHandlers
 
         public async Task<BaseDto> Handle(GetTranslationByIdQuery request, CancellationToken cancellationToken)
         {
-            var result = await _translationQueryRepository.GetTranslationByIdAsync(request.Id);
+            try
+            {
+                var result = await _translationQueryRepository.GetTranslationByIdAsync(request.Id);
 
-            if (result == null)
+                if (result == null)
+                {
+                    return new BaseDto
+                    {
+                        Result = ErrorMessages.NoTranslation
+                    };
+                }
+                else if (result.Status == Status.Error)
+                {
+                    return new TranslationErrorDtoBuilder()
+                        .WithErrorMessage(result.Result)
+                        .WithResult(ErrorMessages.ErrorOccurred)
+                        .WithOriginalText(result.OriginalText)
+                        .Build();
+                }
+                else
+                {
+                    return new TranslationDtoBuilder()
+                       .WithTranslation(result.Result)
+                       .WithDetectedLanguage(result.DetectedLanguage ?? string.Empty)
+                       .WithOriginalText(result.OriginalText)
+                       .Build();
+                }
+            }
+            catch (Exception ex)
             {
                 return new BaseDto
                 {
-                    Result = ErrorMessages.NoTranslation
+                    Result = ex.Message
                 };
-            }
-            else if (result.Status == Status.Error)
-            {
-                return new TranslationErrorDtoBuilder()
-                    .WithErrorMessage(result.Result)
-                    .WithResult(ErrorMessages.ErrorOccurred)
-                    .WithOriginalText(result.OriginalText)
-                    .Build();
-            }
-            else
-            {
-                return new TranslationDtoBuilder()
-                   .WithTranslation(result.Result)
-                   .WithDetectedLanguage(result.DetectedLanguage ?? string.Empty)
-                   .WithOriginalText(result.OriginalText)
-                   .Build();
             }
         }
     }
