@@ -6,6 +6,7 @@ using Translator.Controllers;
 using Translator.Application.Queries;
 using Translator.Application.Commands;
 using Translator.Application.DTO;
+using Microsoft.Extensions.Configuration;
 
 namespace Translator.API.Tests
 {
@@ -17,7 +18,17 @@ namespace Translator.API.Tests
         public TranslationControllerTests()
         {
             _mockMediator = new Mock<IMediator>();
-            _controller = new TranslationController(_mockMediator.Object);
+
+            var inMemorySettings = new Dictionary<string, string>
+            {
+                {"TranslationMaxLength", "5000"},
+            };
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+
+            _controller = new TranslationController(_mockMediator.Object, configuration);
         }
 
         [Fact]
