@@ -60,6 +60,27 @@ namespace Translator.API.Tests
                It.IsAny<CancellationToken>()), Times.Once);
 
             Assert.IsType<ActionResult<Guid>>(result);
+            Assert.Equal(200, (result.Result as ObjectResult)?.StatusCode);
+        }
+
+        [Fact]
+        public void Create_TextExceedsLength_ReturnBadRequest()
+        {
+            var id = Guid.NewGuid();
+
+            _mockMediator.Setup(x => x.Send(It.IsAny<CreateTranslationCommand>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(new Unit());
+           
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(new Dictionary<string, string>
+                {
+                    {"TranslationMaxLength", "5"},
+                }).Build();
+
+            var controller = new TranslationController(_mockMediator.Object, configuration);
+            var result = controller.CreateTranslation("Too long text");
+
+            Assert.Equal(400, (result.Result as ObjectResult)?.StatusCode);
         }
 
         private TranslationDto GetTestTranslation() => new TranslationDto
