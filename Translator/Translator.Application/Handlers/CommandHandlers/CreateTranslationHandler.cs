@@ -27,7 +27,7 @@ namespace Translator.Application.Handlers.CommandHandlers
         {
             var entity = TranslationMapper.Mapper.Map<Translation>(request) ?? throw new ApplicationException(ErrorMessages.AutoMapper);
        
-            Translate(entity);
+            await Task.Run(() => Translate(entity), cancellationToken);
 
             return entity.Id;
         }
