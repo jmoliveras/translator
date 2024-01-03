@@ -8,7 +8,7 @@ namespace Translator.Application.Mappers
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
+                cfg.ShouldMapProperty = p => (p.GetMethod?.IsPublic ?? false) || (p.GetMethod?.IsAssembly ?? false);
                 cfg.AddProfile<TranslationMappingProfile>();
             });
 
