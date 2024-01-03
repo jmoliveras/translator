@@ -51,11 +51,6 @@ namespace Translator.API.Tests
         [Fact]
         public async void Create_ModelStateValid_MediatorSendCalledOnce()
         {
-            var id = Guid.NewGuid();
-
-            _mockMediator.Setup(x => x.Send(It.IsAny<CreateTranslationCommand>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(id);
-
             var result = await _controller.CreateTranslation("Test");
 
             _mockMediator.Verify(x => x.Send(It.IsAny<CreateTranslationCommand>(),
@@ -67,12 +62,7 @@ namespace Translator.API.Tests
 
         [Fact]
         public async void Create_TextExceedsLength_ReturnBadRequest()
-        {
-            var id = Guid.NewGuid();
-
-            _mockMediator.Setup(x => x.Send(It.IsAny<CreateTranslationCommand>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(id);
-           
+        {                   
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string?>
                 {
