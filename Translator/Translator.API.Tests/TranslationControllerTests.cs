@@ -19,10 +19,12 @@ namespace Translator.API.Tests
         {
             _mockMediator = new Mock<IMediator>();
 
-            var inMemorySettings = new Dictionary<string, string>
+            Dictionary<string, string?> inMemorySettings = new()
             {
                 {"TranslationMaxLength", "5000"},
             };
+
+            Assert.NotNull(inMemorySettings);
 
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
@@ -72,7 +74,7 @@ namespace Translator.API.Tests
                 It.IsAny<CancellationToken>())).ReturnsAsync(id);
            
             IConfiguration configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
+                .AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     {"TranslationMaxLength", "5"},
                 }).Build();

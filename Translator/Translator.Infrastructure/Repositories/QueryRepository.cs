@@ -6,12 +6,10 @@ namespace Translator.Infrastructure.Data.Repositories
 {
     public class QueryRepository<T> : DbConnector, IQueryRepository<T> where T : BaseEntity
     {
-        protected readonly TranslationContext _context;
-
         public QueryRepository(IConfiguration configuration)
             : base(configuration)
         {
-            
-        }        
+
+        }
     }
 }

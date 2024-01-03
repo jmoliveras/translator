@@ -15,7 +15,7 @@ namespace Translator.Infrastructure.Data.Repositories
 
         }
 
-        public async Task<Translation> GetTranslationByIdAsync(Guid id)
+        public async Task<Translation?> GetTranslationByIdAsync(Guid id)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace Translator.Infrastructure.Data.Repositories
                 parameters.Add("id", id, DbType.Guid);
 
                 using var connection = CreateConnection();
-                return await connection.QuerySingleOrDefaultAsync<Translation>(TranslationQueries.GetTranslationByIdQuery(), parameters);
+                return await connection.QuerySingleOrDefaultAsync<Translation>(TranslationQueries.GetTranslationByIdQuery(), parameters);               
             }
             catch (Exception ex)
             {
