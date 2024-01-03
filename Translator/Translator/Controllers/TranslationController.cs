@@ -30,7 +30,7 @@ namespace Translator.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Guid> CreateTranslation([FromBody] string text)
+        public async Task<ActionResult<Guid>> CreateTranslation([FromBody] string text)
         {
             // Prevent from consuming free tier 2M characters limit in Azure AI Translator
             // by not allowing large texts.
@@ -41,9 +41,8 @@ namespace Translator.Controllers
                 return BadRequest(string.Format(ErrorMessages.TextTooLong, maxLength));
             }
 
-            var id = Guid.NewGuid();
-            _ = _mediator.Send(new CreateTranslationCommand { Id = id, OriginalText = text });
-            return Ok(id);
+            var result = await _mediator.Send(new CreateTranslationCommand { OriginalText = text });
+            return Ok(result);
         }
     }
 }

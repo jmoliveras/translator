@@ -47,14 +47,14 @@ namespace Translator.API.Tests
         }      
 
         [Fact]
-        public void Create_ModelStateValid_MediatorSendCalledOnce()
+        public async void Create_ModelStateValid_MediatorSendCalledOnce()
         {
             var id = Guid.NewGuid();
 
             _mockMediator.Setup(x => x.Send(It.IsAny<CreateTranslationCommand>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(new Unit());
+                It.IsAny<CancellationToken>())).ReturnsAsync(id);
 
-            var result = _controller.CreateTranslation("Test");
+            var result = await _controller.CreateTranslation("Test");
 
             _mockMediator.Verify(x => x.Send(It.IsAny<CreateTranslationCommand>(),
                It.IsAny<CancellationToken>()), Times.Once);
@@ -64,12 +64,12 @@ namespace Translator.API.Tests
         }
 
         [Fact]
-        public void Create_TextExceedsLength_ReturnBadRequest()
+        public async void Create_TextExceedsLength_ReturnBadRequest()
         {
             var id = Guid.NewGuid();
 
             _mockMediator.Setup(x => x.Send(It.IsAny<CreateTranslationCommand>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(new Unit());
+                It.IsAny<CancellationToken>())).ReturnsAsync(id);
            
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string>
@@ -78,7 +78,7 @@ namespace Translator.API.Tests
                 }).Build();
 
             var controller = new TranslationController(_mockMediator.Object, configuration);
-            var result = controller.CreateTranslation("Too long text");
+            var result = await controller.CreateTranslation("Too long text");
 
             Assert.Equal(400, (result.Result as ObjectResult)?.StatusCode);
         }

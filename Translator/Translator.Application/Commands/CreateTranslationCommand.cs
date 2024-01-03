@@ -2,9 +2,9 @@
 
 namespace Translator.Application.Commands
 {
-    public class CreateTranslationCommand : IRequest<Unit>
+    public class CreateTranslationCommand : IRequest<Guid>
     {
-        public Guid Id { get; set; }
-        public required string OriginalText { get; set; }        
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public required string OriginalText { get; set; }
     }
 }
