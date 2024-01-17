@@ -1,7 +1,7 @@
 ﻿namespace Translator.Application.Constants
 {
-    internal static class Languages
+    public static class Languages
     {
-        internal const string Spanish = "es";
+        public const string Spanish = "es";
     }
 }

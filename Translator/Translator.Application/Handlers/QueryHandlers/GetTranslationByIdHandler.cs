@@ -10,13 +10,13 @@ namespace Translator.Application.Handlers.QueryHandlers
 {
     public class GetTranslationByIdHandler(ITranslationQueryRepository repository) : IRequestHandler<GetTranslationByIdQuery, BaseDto>
     {
-        private readonly ITranslationQueryRepository _translationQueryRepository = repository;
+        private readonly ITranslationQueryRepository _repository = repository;
 
         public async Task<BaseDto> Handle(GetTranslationByIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _translationQueryRepository.GetTranslationByIdAsync(request.Id);
+                var result = await _repository.GetTranslationByIdAsync(request.Id);
 
                 if (result == null)
                 {
@@ -28,7 +28,7 @@ namespace Translator.Application.Handlers.QueryHandlers
                 else if (result.Status == Status.Error)
                 {
                     return new TranslationErrorDtoBuilder()
-                        .WithErrorMessage(result.Result)
+                        .WithErrorMessage(result.Result ?? string.Empty)
                         .WithResult(ErrorMessages.ErrorOccurred)
                         .WithOriginalText(result.OriginalText)
                         .Build();
@@ -36,7 +36,7 @@ namespace Translator.Application.Handlers.QueryHandlers
                 else
                 {
                     return new TranslationDtoBuilder()
-                       .WithTranslation(result.Result)
+                       .WithTranslation(result.Result ?? string.Empty)
                        .WithDetectedLanguage(result.DetectedLanguage ?? string.Empty)
                        .WithOriginalText(result.OriginalText)
                        .Build();

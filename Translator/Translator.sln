@@ -5,11 +5,11 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translator.API", "Translator\Translator.API.csproj", "{2DED5280-44C2-4E1F-9896-BA6EBBBE8D25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translator.Application", "Translator.Application\Translator.Application.csproj", "{53B9F3E8-D046-4061-BB74-3F897DFCB1BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translator.Application", "Translator.Application\Translator.Application.csproj", "{53B9F3E8-D046-4061-BB74-3F897DFCB1BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translator.Domain", "Translator.Domain\Translator.Domain.csproj", "{FAF380E3-CD13-484B-9AB7-B55109BBF742}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translator.Domain", "Translator.Domain\Translator.Domain.csproj", "{FAF380E3-CD13-484B-9AB7-B55109BBF742}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translator.Infrastructure.Data", "Translator.Infrastructure\Translator.Infrastructure.Data.csproj", "{B71CF4B5-19C5-4E23-943E-9CA66CB7E51E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translator.Infrastructure.Data", "Translator.Infrastructure\Translator.Infrastructure.Data.csproj", "{B71CF4B5-19C5-4E23-943E-9CA66CB7E51E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Application", "2. Application", "{8CADA3E0-6F39-46A7-9EC0-5D1FF91E855E}"
 EndProject
@@ -21,7 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Infrastructure", "4. Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Tests", "5. Tests", "{AFE1853F-FA37-469A-AB44-A87074D739C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translator.API.Tests", "Translator.API.Tests\Translator.API.Tests.csproj", "{B2CD6EED-4E6E-4909-A881-B37549586397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translator.API.Tests", "Translator.API.Tests\Translator.API.Tests.csproj", "{B2CD6EED-4E6E-4909-A881-B37549586397}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranslationFunction", "TranslationFunction\TranslationFunction.csproj", "{31520D51-87A1-4997-9BF9-5A5ED339CA2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{B2CD6EED-4E6E-4909-A881-B37549586397}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2CD6EED-4E6E-4909-A881-B37549586397}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2CD6EED-4E6E-4909-A881-B37549586397}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31520D51-87A1-4997-9BF9-5A5ED339CA2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31520D51-87A1-4997-9BF9-5A5ED339CA2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31520D51-87A1-4997-9BF9-5A5ED339CA2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31520D51-87A1-4997-9BF9-5A5ED339CA2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{FAF380E3-CD13-484B-9AB7-B55109BBF742} = {92CBCA02-0F9E-4F42-A6CA-AD5221E12F92}
 		{B71CF4B5-19C5-4E23-943E-9CA66CB7E51E} = {91A80145-2F28-41B5-A594-CF256C7CCEB4}
 		{B2CD6EED-4E6E-4909-A881-B37549586397} = {AFE1853F-FA37-469A-AB44-A87074D739C8}
+		{31520D51-87A1-4997-9BF9-5A5ED339CA2D} = {CCD8B6FE-51C0-45B6-8F29-D70CB964FF98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F05AC516-7C3D-485A-A337-46F95B40A9EB}

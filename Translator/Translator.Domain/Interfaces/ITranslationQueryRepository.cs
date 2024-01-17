@@ -5,6 +5,6 @@ namespace Translator.Domain.Interfaces
 {
     public interface ITranslationQueryRepository : IQueryRepository<Translation>
     {
-        Task<Translation?> GetTranslationByIdAsync(Guid id);
+        Task<Translation> GetTranslationByIdAsync(Guid id);
     }
 }

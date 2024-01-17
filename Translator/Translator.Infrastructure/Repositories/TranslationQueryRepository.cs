@@ -7,15 +7,9 @@ using Translator.Infrastructure.Data.SqlQueries;
 
 namespace Translator.Infrastructure.Data.Repositories
 {
-    public class TranslationQueryRepository : QueryRepository<Translation>, ITranslationQueryRepository
+    public class TranslationQueryRepository(IConfiguration configuration) : QueryRepository<Translation>(configuration), ITranslationQueryRepository
     {
-        public TranslationQueryRepository(IConfiguration configuration)
-            : base(configuration)
-        {
-
-        }
-
-        public async Task<Translation?> GetTranslationByIdAsync(Guid id)
+        public async Task<Translation> GetTranslationByIdAsync(Guid id)
         {
             try
             {
@@ -23,7 +17,7 @@ namespace Translator.Infrastructure.Data.Repositories
                 parameters.Add("id", id, DbType.Guid);
 
                 using var connection = CreateConnection();
-                return await connection.QuerySingleOrDefaultAsync<Translation>(TranslationQueries.GetTranslationByIdQuery(), parameters);               
+                return await connection.QuerySingleAsync<Translation>(TranslationQueries.GetTranslationByIdQuery(), parameters);               
             }
             catch (Exception ex)
             {

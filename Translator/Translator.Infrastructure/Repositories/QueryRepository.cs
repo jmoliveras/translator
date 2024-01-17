@@ -4,12 +4,7 @@ using Translator.Domain.Interfaces.Base;
 
 namespace Translator.Infrastructure.Data.Repositories
 {
-    public class QueryRepository<T> : DbConnector, IQueryRepository<T> where T : BaseEntity
+    public class QueryRepository<T>(IConfiguration configuration) : DbConnector(configuration), IQueryRepository<T> where T : BaseEntity
     {
-        public QueryRepository(IConfiguration configuration)
-            : base(configuration)
-        {
-
-        }
     }
 }

@@ -5,13 +5,18 @@ using Microsoft.Extensions.Logging;
 using Translator.Application.Constants;
 using Translator.Application.Services.Interfaces;
 using Translator.Application.Settings;
+using Translator.Domain.Enums;
+using Translator.Domain.Interfaces;
 
 namespace Translator.Application.Services
 {
-    public class TranslationService(TranslationSettings settings, ILogger<TranslationService> logger) : ITranslationService
+    public class TranslationService(TranslationSettings settings, ILogger<TranslationService> logger, ITranslationQueryRepository queryRepository,
+        ITranslationCommandRepository commandRepository) : ITranslationService
     {
         private readonly TranslationSettings _settings = settings;
         private readonly ILogger _logger = logger;
+        private readonly ITranslationQueryRepository _queryRepository = queryRepository;
+        private readonly ITranslationCommandRepository _commandRepository = commandRepository;
 
         /// <summary>
         /// Translates given text into given language.
@@ -60,6 +65,34 @@ namespace Translator.Application.Services
             {
                 _logger.LogError(ex.ToString());
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves pending translation with given identifier, performs translation and updates the entity with the translation result.
+        /// </summary>
+        /// <param name="id">The translation identifier.</param>
+        /// <exception cref="NullReferenceException">Translation with given identifier not found.</exception>
+        public async Task ProcessTranslation(Guid id)
+        {
+            var entity = await _queryRepository.GetTranslationByIdAsync(id) ?? throw new NullReferenceException(ErrorMessages.NoTranslation);
+
+            try
+            {
+                var detectedLang = await DetectLanguage(entity.OriginalText);
+
+                entity.Result = detectedLang != Languages.Spanish ? await TranslateText(entity.OriginalText) : null;
+                entity.DetectedLanguage = detectedLang;
+                entity.Status = Status.Success;
+            }
+            catch (Exception ex)
+            {
+                entity.Result = ex.Message;
+                entity.Status = Status.Error;
+            }
+            finally
+            {
+                await _commandRepository.UpdateAsync(entity);
             }
         }
     }

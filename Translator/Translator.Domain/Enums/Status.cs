@@ -2,6 +2,7 @@
 {
     public enum Status: byte
     {
+        Pending,
         Error,
         Success
     }

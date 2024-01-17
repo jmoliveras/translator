@@ -6,5 +6,6 @@ namespace Translator.Application.Services.Interfaces
     {
         Task<string> TranslateText(string text, string language = Languages.Spanish);
         Task<string> DetectLanguage(string text);
+        Task ProcessTranslation(Guid id);
     }
 }
