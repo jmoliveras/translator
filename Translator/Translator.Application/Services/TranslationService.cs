@@ -10,7 +10,9 @@ using Translator.Domain.Interfaces;
 
 namespace Translator.Application.Services
 {
-    public class TranslationService(TranslationSettings settings, ILogger<TranslationService> logger, ITranslationQueryRepository queryRepository,
+    public class TranslationService(TranslationSettings settings,
+        ILogger<TranslationService> logger,
+        ITranslationQueryRepository queryRepository,
         ITranslationCommandRepository commandRepository) : ITranslationService
     {
         private readonly TranslationSettings _settings = settings;

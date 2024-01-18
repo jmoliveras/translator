@@ -25,6 +25,14 @@ namespace Translator.Application.Handlers.QueryHandlers
                         Result = ErrorMessages.NoTranslation
                     };
                 }
+
+                if (result.Status == Status.Pending)
+                {
+                    return new TranslationDtoBuilder()
+                       .WithTranslation(Messages.TranslationInProgress)
+                       .WithOriginalText(result.OriginalText)
+                       .Build();
+                }
                 else if (result.Status == Status.Error)
                 {
                     return new TranslationErrorDtoBuilder()
