@@ -1,3 +1,4 @@
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,10 +16,11 @@ var host = new HostBuilder()
 
 host.ConfigureServices(services =>
 {
+    var connectionStringVariableName = Environment.GetEnvironmentVariable("ConnectionStringVariableName");
+
     services.AddDbContext<TranslationContext>(options =>
-                options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection")));
-
-
+                options.UseSqlServer(Environment.GetEnvironmentVariable(connectionStringVariableName)));
+    
     var serviceProvider = services.BuildServiceProvider();
     var config = serviceProvider.GetRequiredService<IConfiguration>();
 
